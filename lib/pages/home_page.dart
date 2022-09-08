@@ -2,8 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:todo_app/models/task_model.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late List<Task> allTask;
+  @override
+  void initState() {
+    super.initState();
+    allTask = <Task>[];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +37,48 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(),
+      body: allTask.isNotEmpty
+          ? ListView.builder(
+              itemCount: allTask.length,
+              itemBuilder: (BuildContext context, int index) {
+                var task = allTask[index];
+                return Dismissible(
+                  key: Key(task.id),
+                  onDismissed: (direction) {
+                    allTask.removeAt(index);
+                    setState(() {});
+                  },
+                  background: Card(
+                    color: Colors.red,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.delete_forever, color: Colors.white),
+                        SizedBox(width: 5),
+                        Text(
+                          "Gorev Siliniyor...",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                  child: Card(
+                    margin: const EdgeInsets.all(10),
+                    color: index % 2 == 0
+                        ? Colors.blue.shade200
+                        : Colors.amber.shade200,
+                    child: ListTile(
+                      title: Text(task.name),
+                      subtitle: Text(
+                          "${task.createdAt.hour} : ${task.createdAt.minute}"),
+                    ),
+                  ),
+                );
+              },
+            )
+          : const Center(
+              child: Text("Henuz bir gorev eklemediniz..."),
+            ),
     );
   }
 
@@ -54,6 +107,8 @@ class HomePage extends StatelessWidget {
                     onConfirm: (time) {
                       var yeniEklenecekGorev =
                           Task.create(name: value, createdAt: time);
+                      allTask.add(yeniEklenecekGorev);
+                      setState(() {});
                     },
                   );
                 }
