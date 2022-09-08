@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:todo_app/models/task_model.dart';
+import 'package:todo_app/widgets/task_list_item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -67,11 +68,7 @@ class _HomePageState extends State<HomePage> {
                     color: index % 2 == 0
                         ? Colors.blue.shade200
                         : Colors.amber.shade200,
-                    child: ListTile(
-                      title: Text(task.name),
-                      subtitle: Text(
-                          "${task.createdAt.hour} : ${task.createdAt.minute}"),
-                    ),
+                    child: TaskItem(task: task),
                   ),
                 );
               },
