@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_app/data/local_storage.dart';
+import 'package:todo_app/main.dart';
 import 'package:todo_app/models/task_model.dart';
 
 // ignore: must_be_immutable
@@ -16,10 +18,13 @@ class _TaskItemState extends State<TaskItem> {
   Widget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
     TextEditingController _taskNameController = TextEditingController();
+    // ignore: no_leading_underscores_for_local_identifiers
+    late LocalStorage _localStorage;
     @override
     // ignore: unused_element
     void initState() {
       super.initState();
+      _localStorage = locator<LocalStorage>();
       _taskNameController.text = widget.task.name;
     }
 
@@ -58,6 +63,7 @@ class _TaskItemState extends State<TaskItem> {
                 onSubmitted: (newValue) {
                   if (newValue.length > 3) {
                     widget.task.name = newValue;
+                    _localStorage.updateTask(task: widget.task);
                   }
                 },
               ),
@@ -65,6 +71,7 @@ class _TaskItemState extends State<TaskItem> {
           onTap: () {
             setState(() {
               widget.task.isCompleted = !widget.task.isCompleted;
+              _localStorage.updateTask(task: widget.task);
             });
           },
           child: CircleAvatar(

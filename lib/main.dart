@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_app/data/local_storage.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/pages/home_page.dart';
+
+final locator = GetIt.instance;
+
+void setup() {
+  locator.registerSingleton<LocalStorage>(HiveLocalStorage());
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +19,7 @@ void main() async {
 
   await Hive.initFlutter();
   Hive.registerAdapter(TaskAdapter());
+  setup();
   runApp(const MyApp());
 }
 
