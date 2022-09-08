@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:todo_app/models/task_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,14 +37,27 @@ class HomePage extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: const ListTile(
+          child: ListTile(
             title: TextField(
-              style: TextStyle(fontSize: 20),
-              decoration: InputDecoration(
+              style: const TextStyle(fontSize: 20),
+              decoration: const InputDecoration(
                 hintText: "Gorev",
                 border: InputBorder.none,
                 icon: Icon(Icons.edit),
               ),
+              onSubmitted: (value) {
+                Navigator.pop(context);
+                if (value.length > 3) {
+                  DatePicker.showTimePicker(
+                    context,
+                    showSecondsColumn: false,
+                    onConfirm: (time) {
+                      var yeniEklenecekGorev =
+                          Task.create(name: value, createdAt: time);
+                    },
+                  );
+                }
+              },
             ),
           ),
         );
