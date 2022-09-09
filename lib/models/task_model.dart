@@ -6,10 +6,13 @@ part 'task_model.g.dart';
 class Task extends HiveObject {
   @HiveField(0)
   final String id;
+
   @HiveField(1)
   String name;
+
   @HiveField(2)
   final DateTime createdAt;
+
   @HiveField(3)
   bool isCompleted;
 

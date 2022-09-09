@@ -14,20 +14,18 @@ class TaskItem extends StatefulWidget {
 }
 
 class _TaskItemState extends State<TaskItem> {
+  final TextEditingController _taskNameController = TextEditingController();
+  late LocalStorage _localStorage;
+
+  @override
+  void initState() {
+    super.initState();
+    _localStorage = locator<LocalStorage>();
+    _taskNameController.text = widget.task.name;
+  }
+
   @override
   Widget build(BuildContext context) {
-    // ignore: no_leading_underscores_for_local_identifiers
-    TextEditingController _taskNameController = TextEditingController();
-    // ignore: no_leading_underscores_for_local_identifiers
-    late LocalStorage _localStorage;
-    @override
-    // ignore: unused_element
-    void initState() {
-      super.initState();
-      _localStorage = locator<LocalStorage>();
-      _taskNameController.text = widget.task.name;
-    }
-
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -52,13 +50,8 @@ class _TaskItemState extends State<TaskItem> {
                 minLines: 1,
                 maxLines: null,
                 textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: InputBorder.none,
-                  hintText: widget.task.name,
-                  hintStyle: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                  ),
                 ),
                 onSubmitted: (newValue) {
                   if (newValue.length > 3) {
@@ -69,10 +62,9 @@ class _TaskItemState extends State<TaskItem> {
               ),
         leading: GestureDetector(
           onTap: () {
-            setState(() {
-              widget.task.isCompleted = !widget.task.isCompleted;
-              _localStorage.updateTask(task: widget.task);
-            });
+            widget.task.isCompleted = !widget.task.isCompleted;
+            _localStorage.updateTask(task: widget.task);
+            setState(() {});
           },
           child: CircleAvatar(
             backgroundColor:

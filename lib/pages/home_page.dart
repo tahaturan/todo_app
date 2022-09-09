@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _localStorage = locator<LocalStorage>();
     allTask = <Task>[];
-    _getAllTaskFrom();
+    _getAllTaskFromDb();
   }
 
   @override
@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _getAllTaskFrom() async {
+  Future<void> _getAllTaskFromDb() async {
     allTask = await _localStorage.getAllTask();
     setState(() {});
   }
