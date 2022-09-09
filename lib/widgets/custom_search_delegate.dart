@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/data/local_storage.dart';
 import 'package:todo_app/main.dart';
@@ -59,11 +60,12 @@ class CustomSearchDelegate extends SearchDelegate {
                   color: Colors.red,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.delete_forever, color: Colors.white),
-                      SizedBox(width: 5),
+                    children: [
+                      const Icon(Icons.delete_forever, color: Colors.white),
+                      const SizedBox(width: 5),
                       Text(
-                        "Gorev Siliniyor...",
+                        'remove_task'.tr(),
+                        // ignore: prefer_const_constructors
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -79,8 +81,9 @@ class CustomSearchDelegate extends SearchDelegate {
               );
             },
           )
-        : const Center(
-            child: Text("Aradiginizi Bulamadik..."),
+        : Center(
+            // ignore: prefer_const_constructors
+            child: Text('search_not_found').tr(),
           );
   }
 

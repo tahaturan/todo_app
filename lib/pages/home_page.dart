@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:todo_app/data/local_storage.dart';
+import 'package:todo_app/helper/translation_helper.dart';
 import 'package:todo_app/main.dart';
 import 'package:todo_app/models/task_model.dart';
 import 'package:todo_app/widgets/custom_search_delegate.dart';
@@ -31,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('AnaSayfa'),
+        title: Text('title').tr(),
         centerTitle: false,
         actions: [
           IconButton(
@@ -64,13 +66,13 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.red,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.delete_forever, color: Colors.white),
-                        SizedBox(width: 5),
+                      children: [
+                        const Icon(Icons.delete_forever, color: Colors.white),
+                        const SizedBox(width: 5),
                         Text(
-                          "Gorev Siliniyor...",
+                          'remove_task',
                           style: TextStyle(color: Colors.white),
-                        ),
+                        ).tr(),
                       ],
                     ),
                   ),
@@ -84,8 +86,8 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             )
-          : const Center(
-              child: Text("Henuz bir gorev eklemediniz..."),
+          : Center(
+              child: Text('emty_task_list').tr(),
             ),
     );
   }
@@ -101,10 +103,10 @@ class _HomePageState extends State<HomePage> {
           child: ListTile(
             title: TextField(
               style: const TextStyle(fontSize: 20),
-              decoration: const InputDecoration(
-                hintText: "Gorev",
+              decoration: InputDecoration(
+                hintText: 'add_task'.tr(),
                 border: InputBorder.none,
-                icon: Icon(Icons.edit),
+                icon: const Icon(Icons.edit),
               ),
               onSubmitted: (value) {
                 Navigator.pop(context);
@@ -112,6 +114,7 @@ class _HomePageState extends State<HomePage> {
                   DatePicker.showTimePicker(
                     context,
                     showSecondsColumn: false,
+                    locale: TranslationHelper.getDeviceLanguage(context),
                     onConfirm: (time) async {
                       var yeniEklenecekGorev =
                           Task.create(name: value, createdAt: time);
