@@ -3,6 +3,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:todo_app/data/local_storage.dart';
 import 'package:todo_app/main.dart';
 import 'package:todo_app/models/task_model.dart';
+import 'package:todo_app/widgets/custom_search_delegate.dart';
 import 'package:todo_app/widgets/task_list_item.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,7 +35,9 @@ class _HomePageState extends State<HomePage> {
         centerTitle: false,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _showSearchPage();
+            },
             icon: const Icon(Icons.search),
           ),
           IconButton(
@@ -129,5 +132,11 @@ class _HomePageState extends State<HomePage> {
   Future<void> _getAllTaskFromDb() async {
     allTask = await _localStorage.getAllTask();
     setState(() {});
+  }
+
+  Future<void> _showSearchPage() async {
+    await showSearch(
+        context: context, delegate: CustomSearchDelegate(allTasks: allTask));
+    _getAllTaskFromDb();
   }
 }
